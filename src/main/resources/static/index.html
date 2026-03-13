@@ -138,9 +138,10 @@
             $.ajax({
                 url: API_URL,
                 method: "GET",
-                success: function(data) {
+                success: function(response) {
                     let rows = "";
-                    if (data.length === 0) {
+                    const data = response.data;
+                    if (!data || data.length === 0) {
                         rows = '<tr><td colspan="6" class="text-center text-muted">Belum ada data KTP</td></tr>';
                     } else {
                         data.forEach(ktp => {
@@ -171,7 +172,8 @@
             $.ajax({
                 url: `${API_URL}/${id}`,
                 method: "GET",
-                success: function(ktp) {
+                success: function(response) {
+                    const ktp = response.data;
                     $("#ktpId").val(ktp.id);
                     $("#nomorKtp").val(ktp.nomorKtp);
                     $("#namaLengkap").val(ktp.namaLengkap);
