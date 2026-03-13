@@ -1,59 +1,74 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Ktp;
+import com.example.demo.dto.KtpRequest;
+import com.example.demo.dto.KtpResponse;
+import com.example.demo.model.WebResponse;
 import com.example.demo.service.KtpService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/ktp")
-@CrossOrigin(origins = "*") // Allow CORS for AJAX calls
+@CrossOrigin(origins = "*")
 public class KtpController {
 
     @Autowired
     private KtpService ktpService;
 
     @PostMapping
-    public ResponseEntity<?> createKtp(@Valid @RequestBody Ktp ktp) {
-        try {
-            return ResponseEntity.ok(ktpService.save(ktp));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public WebResponse<KtpResponse> create(@Valid @RequestBody KtpRequest request) {
+        KtpResponse ktpResponse = ktpService.create(request);
+        return WebResponse.<KtpResponse>builder()
+                .code(HttpStatus.OK.value())
+                .status("OK")
+                .data(ktpResponse)
+                .message("Data KTP berhasil ditambahkan")
+                .build();
     }
 
     @GetMapping
-    public List<Ktp> getAllKtp() {
-        return ktpService.findAll();
+    public WebResponse<List<KtpResponse>> getAll() {
+        List<KtpResponse> ktpResponses = ktpService.getAll();
+        return WebResponse.<List<KtpResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .status("OK")
+                .data(ktpResponses)
+                .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getKtpById(@PathVariable Integer id) {
-        return ktpService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public WebResponse<KtpResponse> getById(@PathVariable Integer id) {
+        KtpResponse ktpResponse = ktpService.getById(id);
+        return WebResponse.<KtpResponse>builder()
+                .code(HttpStatus.OK.value())
+                .status("OK")
+                .data(ktpResponse)
+                .build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateKtp(@PathVariable Integer id, @Valid @RequestBody Ktp ktpDetails) {
-        try {
-            return ResponseEntity.ok(ktpService.update(id, ktpDetails));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public WebResponse<KtpResponse> update(@PathVariable Integer id, @Valid @RequestBody KtpRequest request) {
+        KtpResponse ktpResponse = ktpService.update(id, request);
+        return WebResponse.<KtpResponse>builder()
+                .code(HttpStatus.OK.value())
+                .status("OK")
+                .data(ktpResponse)
+                .message("Data KTP berhasil diperbarui")
+                .build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteKtp(@PathVariable Integer id) {
-        try {
-            ktpService.delete(id);
-            return ResponseEntity.ok("Data KTP berhasil dihapus");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public WebResponse<String> delete(@PathVariable Integer id) {
+        ktpService.delete(id);
+        return WebResponse.<String>builder()
+                .code(HttpStatus.OK.value())
+                .status("OK")
+                .data("OK")
+                .message("Data KTP berhasil dihapus")
+                .build();
     }
 }
