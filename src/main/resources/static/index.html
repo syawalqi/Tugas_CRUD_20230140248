@@ -167,6 +167,45 @@
             });
         }
 
+        function editKtp(id) {
+            $.ajax({
+                url: `${API_URL}/${id}`,
+                method: "GET",
+                success: function(ktp) {
+                    $("#ktpId").val(ktp.id);
+                    $("#nomorKtp").val(ktp.nomorKtp);
+                    $("#namaLengkap").val(ktp.namaLengkap);
+                    $("#alamat").val(ktp.alamat);
+                    $("#tanggalLahir").val(ktp.tanggalLahir);
+                    $("#jenisKelamin").val(ktp.jenisKelamin);
+
+                    $("#formHeader").text("Edit Data KTP");
+                    $("#btnSubmit").text("Perbarui Data");
+                    $("#btnCancel").removeClass("d-none");
+                    window.scrollTo(0, 0);
+                },
+                error: function() {
+                    showFeedback("Gagal mengambil data KTP", "danger");
+                }
+            });
+        }
+
+        function deleteKtp(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+                $.ajax({
+                    url: `${API_URL}/${id}`,
+                    method: "DELETE",
+                    success: function() {
+                        showFeedback("Data berhasil dihapus!", "success");
+                        loadKtpData();
+                    },
+                    error: function(xhr) {
+                        showFeedback(xhr.responseText || "Gagal menghapus data", "danger");
+                    }
+                });
+            }
+        }
+
         function showFeedback(message, type) {
             const alert = `
                 <div class="alert alert-${type} alert-dismissible fade show" role="alert">
