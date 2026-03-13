@@ -1,0 +1,42 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "ktp")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Ktp {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "nomor_ktp", unique = true, nullable = false)
+    @NotBlank(message = "Nomor KTP tidak boleh kosong")
+    private String nomorKtp;
+
+    @Column(name = "nama_lengkap", nullable = false)
+    @NotBlank(message = "Nama lengkap tidak boleh kosong")
+    private String namaLengkap;
+
+    @Column(name = "alamat", nullable = false)
+    @NotBlank(message = "Alamat tidak boleh kosong")
+    private String alamat;
+
+    @Column(name = "tanggal_lahir", nullable = false)
+    @NotNull(message = "Tanggal lahir tidak boleh kosong")
+    private LocalDate tanggalLahir;
+
+    @Column(name = "jenis_kelamin", nullable = false)
+    @NotBlank(message = "Jenis kelamin tidak boleh kosong")
+    private String jenisKelamin;
+}
