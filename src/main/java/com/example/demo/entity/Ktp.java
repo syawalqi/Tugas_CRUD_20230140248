@@ -18,13 +18,14 @@ public class Ktp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "nomor_ktp", unique = true, nullable = false)
+    @Column(name = "nomorKtp", unique = true, nullable = false)
     @NotBlank(message = "Nomor KTP tidak boleh kosong")
     private String nomorKtp;
 
-    @Column(name = "nama_lengkap", nullable = false)
+    @Column(name = "namaLengkap", nullable = false)
     @NotBlank(message = "Nama lengkap tidak boleh kosong")
     private String namaLengkap;
 
@@ -32,11 +33,11 @@ public class Ktp {
     @NotBlank(message = "Alamat tidak boleh kosong")
     private String alamat;
 
-    @Column(name = "tanggal_lahir", nullable = false)
+    @Column(name = "tanggalLahir", nullable = false)
     @NotNull(message = "Tanggal lahir tidak boleh kosong")
     private LocalDate tanggalLahir;
 
-    @Column(name = "jenis_kelamin", nullable = false)
+    @Column(name = "jenisKelamin", nullable = false)
     @NotBlank(message = "Jenis kelamin tidak boleh kosong")
     private String jenisKelamin;
 }
