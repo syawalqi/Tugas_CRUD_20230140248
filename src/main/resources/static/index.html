@@ -94,6 +94,44 @@
 
         $(document).ready(function() {
             loadKtpData();
+
+            // Form Submit Handler
+            $("#ktpForm").on("submit", function(e) {
+                e.preventDefault();
+                
+                const id = $("#ktpId").val();
+                const ktpData = {
+                    nomorKtp: $("#nomorKtp").val(),
+                    namaLengkap: $("#namaLengkap").val(),
+                    alamat: $("#alamat").val(),
+                    tanggalLahir: $("#tanggalLahir").val(),
+                    jenisKelamin: $("#jenisKelamin").val()
+                };
+
+                const method = id ? "PUT" : "POST";
+                const url = id ? `${API_URL}/${id}` : API_URL;
+
+                $("#btnSubmit").prop("disabled", true).text("Memproses...");
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    contentType: "application/json",
+                    data: JSON.stringify(ktpData),
+                    success: function() {
+                        const msg = id ? "Data berhasil diperbarui!" : "Data berhasil ditambahkan!";
+                        showFeedback(msg, "success");
+                        resetForm();
+                        loadKtpData();
+                    },
+                    error: function(xhr) {
+                        showFeedback(xhr.responseText || "Terjadi kesalahan sistem", "danger");
+                    },
+                    complete: function() {
+                        $("#btnSubmit").prop("disabled", false).text(id ? "Perbarui Data" : "Simpan Data");
+                    }
+                });
+            });
         });
 
         function loadKtpData() {
